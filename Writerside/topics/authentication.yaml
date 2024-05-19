@@ -1,0 +1,113 @@
+openapi: 3.0.2
+info:
+  title: Virtuheal API Auth
+  version: 1.0.0
+  description: Virtuheal API endpoint for authentication
+servers:
+  - url: hostname/api/auth
+paths:
+  /token/:
+    post:
+      tags:
+        - authentication
+      summary: Obtain JWT token
+      operationId: obtainToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Token obtained successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+                  refresh:
+                    type: string
+        '400':
+          description: Invalid credentials
+        '401':
+          description: Unauthorized
+  /token/refresh/:
+    post:
+      tags:
+        - authentication
+      summary: Refresh JWT token
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh:
+                  type: string
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+        '400':
+          description: Invalid token
+  /token/verify/:
+    post:
+      tags:
+        - authentication
+      summary: Verify JWT token
+      operationId: verifyToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid token
+components:
+  schemas:
+    InterfaceUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+    InterfaceUserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string

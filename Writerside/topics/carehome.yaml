@@ -1,0 +1,160 @@
+openapi: 3.0.2
+info:
+  title: Care Homes API
+  version: 1.0.0
+  description: API documentation for Care Homes and Care Home Managers
+servers:
+  - url: hostname/api/
+paths:
+  /carehomes/:
+    get:
+      tags:
+        - carehomes
+      summary: List all care homes
+      operationId: listCareHomes
+      responses:
+        '200':
+          description: A list of care homes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CareHome'
+    post:
+      tags:
+        - carehomes
+      summary: Create a new care home
+      operationId: createCareHome
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CareHomeCreate'
+      responses:
+        '201':
+          description: Care home created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CareHome'
+  /carehomes/{id}/:
+    get:
+      tags:
+        - carehomes
+      summary: Retrieve a care home
+      operationId: getCareHome
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home
+      responses:
+        '200':
+          description: Care home retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CareHome'
+        '404':
+          description: Care home not found
+    put:
+      tags:
+        - carehomes
+      summary: Update a care home
+      operationId: updateCareHome
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CareHomeCreate'
+      responses:
+        '200':
+          description: Care home updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CareHome'
+        '404':
+          description: Care home not found
+    delete:
+      tags:
+        - carehomes
+      summary: Delete a care home
+      operationId: deleteCareHome
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home
+      responses:
+        '204':
+          description: Care home deleted successfully
+        '404':
+          description: Care home not found
+components:
+  schemas:
+    CareHome:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        admin:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CareHomeCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        admin:
+          type: string
+        address:
+          type: string
+    CarehomeManager:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        manager:
+          type: string
+        carehome:
+          type: string
+    CarehomeManagerCreate:
+      type: object
+      properties:
+        manager:
+          type: string
+        carehome:
+          type: string

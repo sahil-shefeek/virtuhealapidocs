@@ -1,0 +1,213 @@
+openapi: 3.0.2
+info:
+  title: Feedback API
+  version: 1.0.0
+  description: API documentation for Feedbacks
+servers:
+  - url: /api
+paths:
+  /feedbacks/:
+    get:
+      tags:
+        - feedbacks
+      summary: List all feedbacks
+      operationId: listFeedbacks
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: associate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: UUID of the associate to filter feedbacks by
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date for the feedback session date range
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date for the feedback session date range
+      responses:
+        '200':
+          description: A list of feedbacks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - feedbacks
+      summary: Create a new feedback
+      operationId: createFeedback
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackCreate'
+      responses:
+        '201':
+          description: Feedback created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+        '401':
+          description: Unauthorized
+  /feedbacks/{id}/:
+    get:
+      tags:
+        - feedbacks
+      summary: Retrieve a feedback
+      operationId: getFeedback
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the feedback
+      responses:
+        '200':
+          description: Feedback retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+        '404':
+          description: Feedback not found
+        '401':
+          description: Unauthorized
+    put:
+      tags:
+        - feedbacks
+      summary: Update a feedback
+      operationId: updateFeedback
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackCreate'
+      responses:
+        '200':
+          description: Feedback updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+        '404':
+          description: Feedback not found
+        '401':
+          description: Unauthorized
+    delete:
+      tags:
+        - feedbacks
+      summary: Delete a feedback
+      operationId: deleteFeedback
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the feedback
+      responses:
+        '204':
+          description: Feedback deleted successfully
+        '404':
+          description: Feedback not found
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        associate:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        session_date:
+          type: string
+          format: date
+        session_duration:
+          type: integer
+        vr_experience:
+          type: string
+        engagement_level:
+          type: integer
+        satisfaction:
+          type: integer
+        physical_impact:
+          type: integer
+        cognitive_impact:
+          type: integer
+        emotional_response:
+          type: string
+        feedback_notes:
+          type: string
+    FeedbackCreate:
+      type: object
+      properties:
+        associate:
+          type: string
+        session_date:
+          type: string
+          format: date
+        session_duration:
+          type: integer
+        vr_experience:
+          type: string
+        engagement_level:
+          type: integer
+        satisfaction:
+          type: integer
+        physical_impact:
+          type: integer
+        cognitive_impact:
+          type: integer
+        emotional_response:
+          type: string
+        feedback_notes:
+          type: string

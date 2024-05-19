@@ -1,0 +1,185 @@
+openapi: 3.0.2
+info:
+  title: Care Homes API
+  version: 1.0.0
+  description: API documentation for Care Homes and Care Home Managers
+servers:
+  - url: hostname/api/
+paths:
+  /managers/:
+    get:
+      tags:
+        - carehomemanagers
+      summary: List all care home managers
+      operationId: listCarehomeManagers
+      responses:
+        '200':
+          description: A list of care home managers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarehomeManager'
+    post:
+      tags:
+        - carehomemanagers
+      summary: Create a new care home manager
+      operationId: createCarehomeManager
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarehomeManagerCreate'
+      responses:
+        '201':
+          description: Care home manager created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarehomeManager'
+  /managers/{id}/:
+    get:
+      tags:
+        - carehomemanagers
+      summary: Retrieve a care home manager
+      operationId: getCarehomeManager
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home manager
+      responses:
+        '200':
+          description: Care home manager retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarehomeManager'
+        '404':
+          description: Care home manager not found
+    put:
+      tags:
+        - carehomemanagers
+      summary: Update a care home manager
+      operationId: updateCarehomeManager
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home manager
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarehomeManagerCreate'
+      responses:
+        '200':
+          description: Care home manager updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarehomeManager'
+        '404':
+          description: Care home manager not found
+    delete:
+      tags:
+        - carehomemanagers
+      summary: Delete a care home manager
+      operationId: deleteCarehomeManager
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home manager
+      responses:
+        '204':
+          description: Care home manager deleted successfully
+        '404':
+          description: Care home manager not found
+  /managers/by-carehome/:
+    get:
+      tags:
+        - carehomemanagers
+      summary: List managers by care home
+      operationId: listManagersByCareHome
+      parameters:
+        - name: carehome
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The UUID of the care home
+      responses:
+        '200':
+          description: Managers listed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarehomeManager'
+        '400':
+          description: Invalid care home UUID or carehome query parameter missing
+components:
+  schemas:
+    CareHome:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        admin:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CareHomeCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        admin:
+          type: string
+        address:
+          type: string
+    CarehomeManager:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        manager:
+          type: string
+        carehome:
+          type: string
+    CarehomeManagerCreate:
+      type: object
+      properties:
+        manager:
+          type: string
+        carehome:
+          type: string

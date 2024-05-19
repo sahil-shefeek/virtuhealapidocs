@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="vad"
+                 name="Virtuheal API Documentation"
+                 start-page="Welcome.md">
+
+    <toc-element topic="Welcome.md">
+        <toc-element topic="JWTs.md"/>
+        <toc-element topic="Http-status-codes.md"/>
+    </toc-element>
+    <toc-element topic="Authentication.md">
+        <toc-element topic="User-Management.md"/>
+    </toc-element>
+    <toc-element topic="User-groups-and-Authorization.md"/>
+    <toc-element topic="Carehomes.md">
+        <toc-element topic="Care-Home-Managers.md"/>
+    </toc-element>
+    <toc-element topic="Associates.md"/>
+    <toc-element topic="Feedbacks-Section.md"/>
+    <toc-element topic="Reports-Section.md"/>
+</instance-profile>

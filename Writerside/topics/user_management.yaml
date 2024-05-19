@@ -1,0 +1,89 @@
+openapi: 3.0.2
+info:
+  title: Virtuheal API users
+  version: 1.0.0
+  description: Virtuheal API endpoint for user management
+servers:
+  - url: hostname/api/auth
+paths:
+  /user/:
+    get:
+      tags:
+        - users
+      summary: Get user details
+      operationId: getUserDetails
+      responses:
+        '200':
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterfaceUser'
+  /users/:
+    get:
+      tags:
+        - users
+      summary: List users
+      operationId: listUsers
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterfaceUser'
+    post:
+      tags:
+        - users
+      summary: Create a new user
+      operationId: createUser
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [admin, manager]
+          description: The type of user to create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceUserCreate'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterfaceUser'
+components:
+  schemas:
+    InterfaceUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        is_superadmin:
+          type: boolean
+        is_admin:
+          type: boolean
+        is_manager:
+          type: boolean
+    InterfaceUserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
